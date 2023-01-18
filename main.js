@@ -56,7 +56,9 @@ const posts = [
     }
 ];
 
+//prendo il contenitore dei post
 const container = document.getElementById('container');
+
 //creo i post
 posts.forEach(element => {
     const post = document.createElement('div');
@@ -73,8 +75,45 @@ posts.forEach(element => {
                 </div>                    
             </div>
         </div>
+        <div class="post__text">${element.content}</div>
+        <div class="post__image">
+            <img src="${element.media}" alt="">
+        </div>
+        <div class="post__footer">
+            <div class="likes js-likes">
+                <div class="likes__cta">
+                    <a class="like-button js-like-button" href="#" data-postid="${element.id}">
+                        <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
+                        <span class="like-button__label">Mi Piace</span>
+                    </a>
+                </div>
+                <div class="likes__counter">
+                    Piace a <b id="like-counter-${element.id}" class="js-likes-counter">${element.likes}</b> persone
+                </div>
+            </div> 
+        </div>
     `;
 
     container.append(post);
+});
 
+//creo un array con i bottoni dei like
+const likeButtons = document.querySelectorAll('.js-like-button');
+//faccio un array in cui salvare i post a cui è stato messo like
+const likeArray = [];
+
+//ciclo ed evento al click
+likeButtons.forEach((element, i) => {
+    element.addEventListener('click',
+        function () {
+            //solo se non ho già messo mi piace
+            if (!this.classList.contains('like-button--liked')) {
+                //incremento il like counter
+                const likeCounter = document.getElementById(`like-counter-${i + 1}`);
+                let likeNum = parseInt(likeCounter.innerHTML);
+                likeCounter.innerHTML = likeNum + 1;
+                //mi salvo l'ID nell'apposito array
+                likeArray.push(i + 1);
+            }
+        })
 });
